@@ -24,6 +24,7 @@ body {
 
 button {
   cursor: pointer;
+  outline: none;
   width: 200px;
   height: 50px;
   font-family: 'Courier New', Courier, monospace;
@@ -42,18 +43,17 @@ button:active {
   transform: scale(0.98);
 }
 button:disabled {
-  cursor:default;
+  cursor: default;
   filter: brightness(30%);
 }
 
-
-/* Media Query:for Tablet or Mobile */
-@media screen and (max-width: 1000px) {
+/* Media Query: Tablet or smaller */
+@media screen and (max-width:1000px) {
   .container {
     background-size: cover;
     background-position: center center;
   }
   button {
-    box-shadow: 5px 5px 30px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 30px 20px rgba(0, 0, 0, 0.5);
   }
 }
