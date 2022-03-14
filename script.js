@@ -45,13 +45,19 @@ const VoiceRSS = {
     _getXHR: function() { try { return new XMLHttpRequest } catch (e) {} try { return new ActiveXObject("Msxml3.XMLHTTP") } catch (e) {} try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") } catch (e) {} try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") } catch (e) {} try { return new ActiveXObject("Msxml2.XMLHTTP") } catch (e) {} try { return new ActiveXObject("Microsoft.XMLHTTP") } catch (e) {} throw "The browser does not support HTTP request" }
 };
 
+//Disabe/Enable Button
+function toggleButton() {
+    button.disabled = !button.disabled;
+}
 
 
-function test() {
+//Passing Joke to VoiceRss API
+function tellMe(joke) {
+    // console.log('tell me: ', joke);
     VoiceRSS.speech({
         // key: '<API key>',
         key: '2f8fed7e51e14e41a5b4c2b4f0f63ab3',
-        src: 'Hello, world!',
+        src: joke,
         hl: 'en-us',
         v: 'Linda',
         r: 0,
@@ -60,4 +66,31 @@ function test() {
         ssml: false
     });
 }
-test();
+//Get Jokes from Joke API
+async function getJokes() {
+    let joke = '';
+    const apiUri = 'https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,explicit';
+    try {
+        const response = await fetch(apiUri);
+        const data = await response.json();
+        // console.log(data.joke);
+        if (data.setup) {
+            joke = `${data.setup} ... ${data.delivery}`;
+        } else {
+            joke = data.joke;
+        }
+        // console.log(joke);
+        //Text-to-Speech
+        tellMe(joke);
+        //Disable Button
+        toggleButton();
+    } catch (error) {
+        //Catch Errors Here
+        console.log('Whooops', error);
+    }
+};
+
+
+// getJokes();
+button.addEventListener('click', getJokes);
+audioElement.addEventListener('ended', toggleButton);
